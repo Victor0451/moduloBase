@@ -3,6 +3,7 @@ import '../styles/globals.css'
 import useAutenticacion from "../hooks/useAutenticacion";
 import UserContext from "../context/UserContext";
 import jsCookie from "js-cookie";
+import { ChakraProvider } from '@chakra-ui/react'
 
 // import "react-table/react-table.css";
 // import "react-confirm-alert/src/react-confirm-alert.css";
@@ -15,15 +16,16 @@ const MyApp = (props) => {
   let token = jsCookie.get("token")
 
   return (
-    <UserContext.Provider
-      value={{
-        usuario,
-        token
-      }}
-    >
-      <Component {...pageProps} />
-    </UserContext.Provider>
-
+    <ChakraProvider>
+      <UserContext.Provider
+        value={{
+          usuario,
+          token
+        }}
+      >
+        <Component {...pageProps} />
+      </UserContext.Provider>
+    </ChakraProvider>
 
 
   );

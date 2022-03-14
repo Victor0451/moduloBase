@@ -1,4 +1,23 @@
 import React from 'react'
+import {
+    Container,
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    FormHelperText,
+    Input,
+    Box,
+    Button,
+    Stack,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+    CloseButton
+
+} from '@chakra-ui/react'
+
+import Link from 'next/link'
 
 const FormRegistro = ({
     usuarioRef,
@@ -9,7 +28,16 @@ const FormRegistro = ({
     errores
 }) => {
     return (
-        <div className='mt-4 container border border-dark p-4 col-md-10'>
+        <Container
+            className=' mt-4 p-4'
+            maxW='container.md'
+            borderWidth='1px'
+            borderRadius='lg'
+            borderColor="blackAlpha.900"
+            shadow='xl'
+
+
+        >
 
             <h2>
                 <strong>
@@ -20,68 +48,71 @@ const FormRegistro = ({
             </h2>
 
 
-            <div className='row mt-4 border border-dark p-4 '>
-
-                <div className='col-md-4'>
-                    <label>
-                        <u>
-                            Usuario
-                        </u>
-                    </label>
-                    <input className='form-control' type="text" placeholder='Usuario' ref={usuarioRef} />
-                </div>
-
-                <div className='col-md-4'>
-                    <label>
-                        <u>
-                            Contraseña
-                        </u>
-                    </label>
-                    <input className='form-control' type="password" placeholder='Contraseña' ref={contrasenaRef} />
-                </div>
+            <Box
+                className='row'
+                maxW="container.xl"
+                mt="4"
+                p={4}
+                alignItems='center'
+                borderWidth='1px'
+                borderRadius='lg'
+                borderColor="blackAlpha.500"
+                justifyContent="center"
+                display="flex"
+            >
 
 
-                <div className='col-md-4'>
-                    <label>
-                        <u>
-                            Apellido
-                        </u>
-                    </label>
-                    <input className='form-control' type="text" placeholder='Apellido' ref={apellidoRef} />
-                </div>
 
-                <div className='col-md-4 mt-4'>
-                    <label>
-                        <u>
-                            Nombre
-                        </u>
-                    </label>
-                    <input className='form-control' type="text" placeholder='Nombre' ref={nombreRef} />
-                </div>
-            </div>
+                <FormControl isRequired w="xs" >
+                    <FormLabel >Usuario</FormLabel>
+                    <Input id='usuario' type='text' ref={usuarioRef} />
+                </FormControl>
+
+                <FormControl isRequired w="xs" ml="1" >
+                    <FormLabel >Contraseña </FormLabel>
+                    <Input id='contrasena' type='password' ref={contrasenaRef} />
+                </FormControl>
+
+                <FormControl isRequired w="xs" ml="1" mt="4">
+                    <FormLabel >Apellido</FormLabel>
+                    <Input id='apellido' type='text' ref={apellidoRef} />
+                </FormControl>
+
+
+                <FormControl isRequired w="xs" ml="1" mt="4">
+                    <FormLabel >Nombre</FormLabel>
+                    <Input id='nombre' type='text' ref={nombreRef} />
+                </FormControl>
+
+            </Box>
 
             {errores ? (
-                <div className='mt-4 mb-4 border border-dark alert alert-danger text-center text-uppercase'>
-                    {errores}
-                </div>
+                <Alert className='mt-4' status='error' ariant='left-accent'>
+                    <AlertIcon />
+                    <AlertDescription>{errores}.</AlertDescription>
+                </Alert>
             ) : null}
 
-            <div className='row d-flex justify-content-center border border-dark p-4 mt-4'>
-                <div className=''>
-                    <button className='btn btn-primary' onClick={() => registrarUsuario()}>
-                        Registrar Usuario
-                    </button>
-                </div>
 
+            <Box
+                w='100%'
+                mt="4"
+                p={4}
+                justifyContent="center"
+                display="flex"
+                maxW="container.xl"
+            >
+                <Stack spacing={4} direction='row' align='center'>
+                    <Button colorScheme='blue' size="sm" onClick={() => registrarUsuario()}>Registrar Usuario</Button>
 
-                <div className='ml-1'>
-                    <a className='btn btn-danger' href='/'>
-                        Cancelar
-                    </a>
-                </div>
-
-            </div>
-        </div>
+                    <Link href='/'>
+                        <Button colorScheme='red' size="sm">
+                            Cancelar
+                        </Button>
+                    </Link>
+                </Stack>
+            </Box>
+        </Container>
 
     )
 }

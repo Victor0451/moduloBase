@@ -33,13 +33,13 @@ const Registrar = () => {
 
             guardarErrores("Debes ingresar la contraseña")
 
-        } else if (nombreRef.current.value === "") {
-
-            guardarErrores("Debes ingresar el nombre")
-
         } else if (apellidoRef.current.value === "") {
 
             guardarErrores("Debes ingresar el apellido")
+
+        } else if (nombreRef.current.value === "") {
+
+            guardarErrores("Debes ingresar el nombre")
 
         } else {
 
