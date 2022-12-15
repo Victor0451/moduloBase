@@ -1,80 +1,304 @@
-import { ReactNode } from 'react';
+import React, { useState } from 'react'
 import {
-    Box,
+    useColorMode,
     Flex,
     Button,
+    IconButton,
     Menu,
     MenuButton,
     MenuList,
     MenuItem,
-    MenuDivider,
-    ChevronDownIcon,
-    useDisclosure,
-    useColorModeValue,
-    Stack,
-    useColorMode,
-    HStack,
-
-
-} from '@chakra-ui/react';
-
-import {
-
+    Box,
+    Badge,
+    useMediaQuery
 } from '@chakra-ui/react'
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
+import Link from 'next/link'
+import jsCookie from 'js-cookie'
+import Router from 'next/router'
+import toastr from 'toastr'
+import Options from './Opciones'
 
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+
+const Navbar = () => {
+    const { colorMode, toggleColorMode } = useColorMode()
+    const isDark = colorMode === 'dark'
+    const [display, changeDisplay] = useState('none')
 
 
-const NavBar = () => {
-    const { colorMode, toggleColorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const cerrarSesion = () => {
+
+        jsCookie.remove("token")
+        jsCookie.remove("usuario")
+
+        toastr.info("Sesion cerrada correctamente", "ATENCION")
+
+        setTimeout(() => {
+            Router.push('/')
+        }, 1000);
+
+
+    }
+
+    let usuario = jsCookie.get("usuario")
+
+    const [resp] = useMediaQuery('(min-width: 767px)')
+
     return (
-        <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+        <Box className='row'>
+            <Flex className='col-md-10'>
+                <Flex
+                    //position="fixed"
+                    top="1rem"
+                    right="1rem"
+                    align="center"
 
-            <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-                <Box color={useColorModeValue('black', 'white')}  >
+                >
+                    {/* Desktop */}
+                    <Flex
+                        display={['none', 'none', 'flex', 'flex']}
 
-                    Logo
+                    >
+                        <Link href="/" passHref>
+                            <Button
+                                variant="ghost"
+                                borderRadius="10"
+                                _hover={{
+                                    bg: "gray.300",
+                                    borderRadius: "10",
+                                    color: "black"
+                                }}
+                            >
+                                Home
+                            </Button>
+                        </Link>
+
+                        <Menu                     >
+                            <MenuButton
+                                ml="2"
+                                variant="ghost"
+                                borderRadius="10"
+                                _hover={{
+                                    bg: "gray.300",
+                                    borderRadius: "10",
+                                    color: "black"
+                                }}
+
+                            >
+                                Categorias
+                            </MenuButton>
+                            <MenuList>
+                                <Link href="/categorias/nuevo">
+                                    <MenuItem>Nueva categoria</MenuItem>
+                                </Link>
+                                <Link href="/categorias/listado">
+                                    <MenuItem>Listado de categorias</MenuItem>
+                                </Link>
+                            </MenuList>
+                        </Menu>
+
+                    </Flex>
+
+                    {/* Mobile */}
+                    <IconButton
+                        aria-label="Open Menu"
+                        size="lg"
+                        mr={2}
+                        icon={
+                            <HamburgerIcon />
+                        }
+                        onClick={() => changeDisplay('flex')}
+                        display={['flex', 'flex', 'none', 'none']}
+                    />
+
+                    {resp === false ? (
+                        <Options
+                            cerrarSesion={cerrarSesion}
+                            isDark={isDark}
+                            toggleColorMode={toggleColorMode}
+                            usuario={usuario}
+
+                        />
+                    ) : null}
+
+                </Flex>
+
+                {/* Mobile Content */}
+                <Flex
+                    w='100vw'
+                    display={display}
+                    bgColor="gray.50"
+                    zIndex={20}
+                    h="100vh"
+                    pos="fixed"
+                    top="0"
+                    left="0"
+                    overflowY="auto"
+                    flexDir="column"
+                >
+                    <Flex justify="flex-end" >
+                        <IconButton
+                            mt={2}
+                            mr={2}
+                            aria-label="Open Menu"
+                            size="lg"
+                            icon={
+                                <CloseIcon
+                                    color={"black"}
+                                />
+                            }
+                            onClick={() => changeDisplay('none')}
+                        />
+                    </Flex>
+
+                    <Flex
+                        flexDir="column"
+                        align="center"
+                    >
+                        <Link href="/" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Home"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Home
+                            </Button>
+                        </Link>
 
 
-                    <Menu >
-                        <MenuButton as={Button} ml="2" >
-                            Actions
-                        </MenuButton>
-                        <MenuList>
-                            <MenuItem>Download</MenuItem>
-                            <MenuItem>Create a Copy</MenuItem>
-                            <MenuItem>Mark as Draft</MenuItem>
-                            <MenuItem>Delete</MenuItem>
-                            <MenuItem>Attend a Workshop</MenuItem>
-                        </MenuList>
-                    </Menu>
+                        <Link href="/categorias/listado" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="About"
+                                my={5}
+                                w="100%"
+                                color={"black"}
 
-                    <Menu>
-                        <MenuButton as={Button} ml="2">
-                            Actions
-                        </MenuButton>
-                        <MenuList>
-                            <MenuItem>Download</MenuItem>
-                            <MenuItem>Create a Copy</MenuItem>
-                            <MenuItem>Mark as Draft</MenuItem>
-                            <MenuItem>Delete</MenuItem>
-                            <MenuItem>Attend a Workshop</MenuItem>
-                        </MenuList>
-                    </Menu>
-                </Box>
+                            >
+                                Categorias
+                            </Button>
+                        </Link>
 
+                        <Link href="/proveedores/listado" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Proveedores"
+                                my={5}
+                                w="100%"
+                                color={"black"}
 
-                <Flex alignItems={'center'}>
-                    <Stack direction={'row'} spacing={7}>
-                        <Button onClick={toggleColorMode} color={useColorModeValue('black', 'white')}>
-                            {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                        </Button>
-                    </Stack>
+                            >
+                                Proveedores
+                            </Button>
+                        </Link>
+
+                        <Link href="/stock/listado" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Productos"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Productos
+                            </Button>
+                        </Link>
+
+                        <Link href="/clientes/listado" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Productos"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Clientes
+                            </Button>
+                        </Link>
+
+                        <Link href="/facturacion/venta" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Productos"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Ventas y Facturacion
+                            </Button>
+                        </Link>
+
+                        <Link href="/cajas/cierre" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Productos"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Cierre de Caja
+                            </Button>
+                        </Link>
+                        <Link href="/cajas/listado" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Productos"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Listado de Cajas Cerradas
+                            </Button>
+                        </Link>
+
+                        <Link href="/informes/informes" passHref>
+                            <Button
+                                as="a"
+                                variant="ghost"
+                                aria-label="Productos"
+                                my={5}
+                                w="100%"
+                                color={"black"}
+
+                            >
+                                Informes
+                            </Button>
+                        </Link>
+                    </Flex>
                 </Flex>
             </Flex>
-        </Box>
+
+            {resp === true ? (
+                <Options
+                    cerrarSesion={cerrarSesion}
+                    isDark={isDark}
+                    toggleColorMode={toggleColorMode}
+                    usuario={usuario}
+
+                />
+            ) : null}
+
+
+        </Box >
+
     )
 }
 
-export default NavBar
+export default Navbar

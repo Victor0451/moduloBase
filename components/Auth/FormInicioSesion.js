@@ -32,12 +32,12 @@ const FormInicioSesion = ({
             minH={'100vh'}
             align={'center'}
             justify={'center'}
-            bg={useColorModeValue('gray.50', 'gray.800')}>
+        >
             <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
                 <Stack align={'center'}>
                     <Heading fontSize={'4xl'}>Iniciar Session</Heading>
                     <Text fontSize={'lg'} color={'gray.600'}>
-                        to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
+                        Sistema de Gestion de Stock.
                     </Text>
                 </Stack>
                 <Box
@@ -65,14 +65,8 @@ const FormInicioSesion = ({
                         ) : null}
 
                         <Stack spacing={10}>
-                            <Stack
-                                direction={{ base: 'column', sm: 'row' }}
-                                align={'start'}
-                                justify={'space-between'}>
-                                {/* <Checkbox>Remember me</Checkbox> */}
-                                <Link href='/auth/registrar' color={'blue.400'}>Registrame</Link>
-                            </Stack>
                             <Button
+                                mt={10}
                                 bg={'blue.400'}
                                 color={'white'}
                                 _hover={{
